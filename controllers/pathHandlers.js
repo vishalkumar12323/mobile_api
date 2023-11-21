@@ -65,12 +65,47 @@ const creatMobileData = async (req, res) => {
   }
 };
 
-//4. UPDATE mobile data
+//4. REPLACE mobile data
+const replaceMobileData = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const {
+      name,
+      price,
+      rating,
+      company,
+      ram,
+      rom,
+      processer,
+      size,
+      camera,
+      battery,
+    } = req.body;
+    const data = await Mobiles.findById({ _id: id });
+    data.name = name;
+    data.price = price;
+    data.rating = rating;
+    data.features.forEach((value) => {
+      value.Ram = ram;
+      value.Rom = rom;
+      value.Processer = processer;
+      value.Size = size;
+      value.Camera = camera;
+      value.Battery = battery;
+    });
+    data.company = company;
+    if (!data) return res.status(404).json({ msg: "Document not updated." });
+    data.save();
+    res.status(201).json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+//5. UPDATE mobile data
 const updateMobileData = async (req, res) => {
   try {
     const id = req.params.id;
     const updateData = req.body;
-    console.log(updateData);
     const updateDocument = await Mobiles.findByIdAndUpdate(id, updateData, {
       new: true,
     });
@@ -83,7 +118,7 @@ const updateMobileData = async (req, res) => {
   }
 };
 
-//5. DELETE mobile data
+//6. DELETE mobile data
 const deleteMobileData = async (req, res) => {
   try {
     const id = req.params.id;
@@ -103,5 +138,6 @@ export {
   getFilterData,
   creatMobileData,
   updateMobileData,
+  replaceMobileData,
   deleteMobileData,
 };
