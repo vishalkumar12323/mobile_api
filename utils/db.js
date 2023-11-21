@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const connectDB = async () => {
+const connectDB = async (URI) => {
   try {
+    mongoose.connect(URI);
     console.log("connection successfully");
-    mongoose.connect("mongodb://127.0.0.1:27017/mobileShop");
   } catch (error) {
     console.log(error);
     process.exit(0);

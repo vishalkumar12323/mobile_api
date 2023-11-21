@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const imageApiSchema = new mongoose.Schema({
+const mobileApiSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -47,5 +47,5 @@ const imageApiSchema = new mongoose.Schema({
   },
 });
 
-const Images = mongoose.model("mobile", imageApiSchema);
-export { Images };
+const Mobiles = mongoose.model("mobile", mobileApiSchema);
+export { Mobiles };

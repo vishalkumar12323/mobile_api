@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import bodyParser from "body-parser";
 import { connectDB } from "./utils/db.js";
@@ -10,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/mobile-api/mobiles", router);
 
 const start = async () => {
-  await connectDB();
+  await connectDB(process.env.URI);
   app.listen(port, () => {
     console.log(`Listening On Port ${port}`);
   });
