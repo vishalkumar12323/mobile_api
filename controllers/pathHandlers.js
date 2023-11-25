@@ -13,7 +13,7 @@ const getData = async (req, res) => {
 //2. GET Filter mobile data
 const getFilterData = async (req, res) => {
   try {
-    const { name, company, price, rating } = req.query;
+    const { name, company, price, rating, sort, select } = req.query;
     const queryObject = {};
 
     if (name) {
@@ -29,7 +29,23 @@ const getFilterData = async (req, res) => {
       queryObject.rating = rating;
     }
 
-    const data = await Mobiles.find(queryObject);
+    let apiData = Mobiles.find(queryObject);
+    if (sort) {
+      let sortedData = sort.split(",").join(" ");
+      apiData.sort(sortedData);
+    }
+
+    if (select) {
+      let selectedData = select.split(",").join(" ");
+      apiData.select(selectedData);
+    }
+
+    let page = Number(req.query.page) || 1;
+    let limit = Number(req.query.limit) || 5;
+
+    let skip = (page - 1) * limit;
+    apiData = apiData.skip(skip).limit(limit);
+    const data = await apiData;
     res.status(200).json(data);
   } catch (error) {
     console.error(error);
